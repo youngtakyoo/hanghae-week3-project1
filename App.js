@@ -1,49 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useRef} from "react";
+import styled from "styled-components";
+import {Route} from "react-router-dom";
+import Weeks from "./Weeks";
+import Days from "./Day";
 
 function App() {
-  let tae = {
-    margin:"2rem auto",
-    maxWidth:"350px",
-    width:"80vw",
-    height:"90vh",
-    border:"solid 1px #ddd",
-    borderRadius:"5px",
-    padding:"2rem 10px"
-  }
-  let balls = {
-    width:"30px",
-    height:"30px",
-    borderRadius:"20px",
-    backgroundColor:"yellow",
-    margin:"5px"
-  }
-  let weekBox = {
-    maxWidth:"250px",
-    width:"70vw",
-    height:"5vh",
-    display:"flex",
-    margin:"30px auto"
-  }
+  const wbox = ["월","화","수","목","금","토","일"]
+  let Nowdate = new Date().getDay();
+  const [week,setWeek] = useState([...wbox.slice(Nowdate - 1, 7),...wbox.slice(0, Nowdate - 1)])
+
 
   return (
     <div className="App">
-      <div style={tae}>
-        <div>
-          <h3>내 일주일은?</h3>
-          <div style={weekBox}>
-            <div>금</div>
-            <div style={balls}></div>
-            <div style={balls}></div>
-            <div style={balls}></div>
-            <div style={balls}></div>
-            <div style={balls}></div>
-            <div>버</div>
-          </div>
-        </div>
-      </div>
+      <Container>
+        <Route path="/" exact>
+          <Title>내 일주일은?</Title>
+          {week.map((x,y)=>{
+
+            return <Weeks key={y} day={x}/>
+          })}
+        </Route>
+        <Route path="/days:day">
+          <Days/>
+        </Route>
+      </Container>
     </div>
   );
 }
 
+const Container = styled.div`
+  max-width: 350px;
+  width: 80vw;
+  height: 90vh;
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+`;
+const Title = styled.h3`
+  margin: 3rem auto 1rem;
+`
 export default App;
